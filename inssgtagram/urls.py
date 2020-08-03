@@ -30,4 +30,4 @@ router.register('post', PostViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-] + static(settings.PICTURE_URL, document_root=settings.PICTURE_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
