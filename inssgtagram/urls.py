@@ -20,6 +20,9 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from ssg.views import UserViewSet, PostViewSet 
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 router = routers.DefaultRouter()
 router.register('user', UserViewSet)
 router.register('post', PostViewSet)
@@ -27,4 +30,4 @@ router.register('post', PostViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-]
+] + static(settings.PICTURE_URL, document_root=settings.PICTURE_ROOT)

@@ -26,7 +26,8 @@ SECRET_KEY = 'ca_#1vq=o06a83mg5m(-!n3xt^%5tgiz6-cx=$ho@)@ipzy^om'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ORIGINAL_ALLOW_ALL = True
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -50,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -123,3 +123,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+PICTURE_ROOT = os.path.join(BASE_DIR, 'media')
+PICTURE_URL = '/media/'
