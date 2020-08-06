@@ -18,7 +18,7 @@ from django.urls import path
 
 from django.conf.urls import url, include
 from rest_framework import routers
-from ssg.views import UserViewSet, PostViewSet 
+from ssg.views import UserViewSet, PostViewSet, login
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,5 +29,6 @@ router.register('post', PostViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', login),
     url(r'^', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

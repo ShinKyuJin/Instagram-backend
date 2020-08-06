@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
 
 # Application definition
 
@@ -41,6 +43,20 @@ INSTALLED_APPS = [
     'rest_framework',
     'ssg',
     'corsheaders',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'X-login-userid',
+    'X-login-userpw'
 ]
 
 MIDDLEWARE = [
