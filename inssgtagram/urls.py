@@ -18,7 +18,7 @@ from django.urls import path
 
 from django.conf.urls import url, include
 from rest_framework import routers
-from ssg.views import UserViewSet, PostViewSet, login
+from ssg.views import UserViewSet, PostViewSet, CommentViewSet, login
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 router = routers.DefaultRouter()
 router.register('user', UserViewSet)
 router.register('post', PostViewSet)
+router.register('comment', CommentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
