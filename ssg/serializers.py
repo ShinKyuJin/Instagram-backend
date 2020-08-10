@@ -20,10 +20,6 @@ class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     author_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), source='author', write_only=True)
-    
-    post = PostSerializer(read_only=True)
-    post_id = serializers.PrimaryKeyRelatedField(
-        queryset=Post.objects.all(), source='post', write_only=True)
 
     class Meta:
         model = Comment
