@@ -58,6 +58,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
     'X-login-userid',
     'X-login-userpw'
+    'X-id'
 ]
 
 INTERNAL_IPS = [

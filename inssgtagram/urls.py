@@ -16,22 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from django.conf.urls import url, include
-from rest_framework import routers
-from ssg.views import UserViewSet, PostViewSet, CommentViewSet, login
+from django.conf.urls import include
+from ssg.views import user, users, post, posts, comment, comments, login, user_me
 
 from django.conf import settings
 from django.conf.urls.static import static
 
-router = routers.DefaultRouter()
-router.register('user', UserViewSet)
-router.register('post', PostViewSet)
-router.register('comment', CommentViewSet)
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login),
-    url(r'^', include(router.urls)),
+    path('user/', users),
+    path('user/<int:pk>/', user),
+    path('post/', posts),
+    path('post/<int:pk>/', post),
+    path('post/<int:pk>/comment/', comments),
+    path('post/<int:post_pk>/comment/<int:comment_pk>/', comment),
+    path('user/me/', user_me)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
