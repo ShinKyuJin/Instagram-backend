@@ -17,21 +17,23 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import include
-from ssg.views import user, users, post, posts, comment, comments, login, user_me
+
+from ssg import views
 
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login),
-    path('user/', users),
-    path('user/<int:pk>/', user),
-    path('post/', posts),
-    path('post/<int:pk>/', post),
-    path('post/<int:pk>/comment/', comments),
-    path('post/<int:post_pk>/comment/<int:comment_pk>/', comment),
-    path('user/me/', user_me)
+
+    path('user/', views.UserListView.as_view()),
+    path('user/<int:pk>/', views.UserDetailView.as_view()),
+
+    path('post/', views.PostListView.as_view()),
+    path('post/<int:pk>/', views.PostDetailView.as_view()),
+    path('post/<int:pk>/comment/', views.CommentListView.as_view()),
+    path('post/<int:pk_post>/comment/<int:pk_comment>/', views.CommentDetailView.as_view()),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

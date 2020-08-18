@@ -14,6 +14,7 @@
   <component name="ProjectId" id="1fzUWA14MZoBh6vxfvuygX71ULd" />
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/manage.py" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="project.propDebugger" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -84,5 +85,18 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="comment_serializer" language="Python" />
+        <watch expression="instance" language="Python" />
+        <watch expression="Comment.objects.get(post=post_instance)" language="Python" />
+        <watch expression="Comment.objects.all()" language="Python" />
+        <watch expression="Post.objects.prefetch_related('comment_set')" language="Python" />
+        <watch expression="Post.objects.prefetch_related('comment_set').all()" language="Python" />
+        <watch expression="__py_debug_temp_var_2143895161" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
