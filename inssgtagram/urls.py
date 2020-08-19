@@ -26,8 +26,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('user/', views.UserListView.as_view()),
-    path('user/<int:pk>/', views.UserDetailView.as_view()),
+    path('user/', views.UserViewSet.as_view({"get": "list", "post": "create"})),
 
     path('post/', views.PostListView.as_view()),
     path('post/<int:pk>/', views.PostDetailView.as_view()),

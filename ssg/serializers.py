@@ -10,12 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CreateUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['user_id', 'user_password', 'user_email']
-
-
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -28,6 +22,16 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'author', 'content', 'created_at']
+
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['author', 'post', 'content']
+
+    def create(self, validated_data):
+        return Comment.objects.create(**validated_data)
+
 
 
 class PostSerializer(serializers.ModelSerializer):
