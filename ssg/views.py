@@ -18,11 +18,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # posts
 class PostListView(APIView):
-    authentication_classes = (BasicAuthentication, JWTAuthentication)
-    permission_classes = (IsAuthenticated, )
 
     def get(self, request):
-        posts = Post.objects.prefetch_related('comment_set').all().order_by('-id')
+        posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -39,7 +37,7 @@ class PostDetailView(APIView):
 
     def get(self, request, pk):
         try:
-            post = Post.objects.prefetch_related('comment_set').get(pk=pk)
+            post = Post.objects.get(pk=pk)
         except Exception as e:
             return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
         serializer = PostSerializer(post)
@@ -47,11 +45,14 @@ class PostDetailView(APIView):
 
     def delete(self, request, pk):
         try:
-            instance = Post.objects.get(pk=pk)
+            post = Post.objects.get(pk=pk)
         except Exception as e:
             return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
-        instance.delete()
-        return Response({'message': 'deleted'}, status.HTTP_202_ACCEPTED)
+        try:
+            deleted: Post = post.delete()
+        except Exception as e:
+            return Response({'message': '이미 삭제되었습니다.'}, status.HTTP_208_ALREADY_REPORTED)
+        return Response(deleted, status.HTTP_202_ACCEPTED)
 
 
 # comments
@@ -59,10 +60,10 @@ class CommentListView(APIView):
 
     def get(self, request, pk):
         try:
-            instance = Comment.objects.prefetch_related('post').filter(post=pk)
+            comments = Comment.objects.filter(post=pk)
         except Exception as e:
             return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(instance, many=True)
+        serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, request, pk):
@@ -78,16 +79,19 @@ class CommentDetailView(APIView):
 
     def get(self, request, pk_post, pk_comment):
         try:
-            instance = Comment.objects.get(pk=pk_comment)
+            comment = Comment.objects.get(pk=pk_comment)
         except Exception as e:
             return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
-        serializer = CommentSerializer(instance)
+        serializer = CommentSerializer(comment)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def delete(self, request, pk_post, pk_comment):
         try:
-            instance = Comment.objects.get(pk=pk_comment)
+            comment = Comment.objects.get(pk=pk_comment)
         except Exception as e:
             return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
-        instance.delete()
-        return Response({'message': 'deleted'}, status.HTTP_202_ACCEPTED)
+        try:
+            deleted: Comment = comment.delete()
+        except Exception as e:
+            return Response({'message': '이미 삭제되었습니다.'}, status.HTTP_208_ALREADY_REPORTED)
+        return Response(deleted, status.HTTP_202_ACCEPTED)
