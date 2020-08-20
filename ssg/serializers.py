@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, Post, Comment
+from ssg.models import User, Post, Comment
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,11 +9,17 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['user_id', 'user_avatar']
+        fields = ['username', 'avatar']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,7 +37,6 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)
-
 
 
 class PostSerializer(serializers.ModelSerializer):

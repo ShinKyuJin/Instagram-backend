@@ -27,10 +27,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+if DEBUG:
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:3000'
+    ]
+else:
+    CORS_ORIGIN_WHITELIST = [
+        # 프론트엔드 도메인이 들어갈 자리
+    ]
 
+AUTH_USER_MODEL = 'ssg.User'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,8 +54,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'ssg',
     'corsheaders',
-    'debug_toolbar',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += 'debug_toolbar'
 
 CORS_ALLOW_HEADERS = [
     'accept',
