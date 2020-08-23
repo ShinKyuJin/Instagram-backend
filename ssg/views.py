@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostListView(APIView):
 
     def get(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-created_at')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -46,12 +47,14 @@ class PostDetailView(APIView):
     def delete(self, request, pk):
         try:
             post = Post.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({'message': '게시물을 찾을 수 없습니다.'}, status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'message': str(e)}, status.HTTP_404_NOT_FOUND)
+            return Response({'message': ''}, status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
             deleted: Post = post.delete()
-        except Exception as e:
-            return Response({'message': '이미 삭제되었습니다.'}, status.HTTP_208_ALREADY_REPORTED)
+        except ObjectDoesNotExist:
+            return Response({'message': '게시물이 이미 삭제되었습니다.'}, status.HTTP_208_ALREADY_REPORTED)
         return Response(deleted, status.HTTP_202_ACCEPTED)
 
 
