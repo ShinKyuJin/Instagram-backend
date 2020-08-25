@@ -26,8 +26,22 @@ SECRET_KEY = 'ca_#1vq=o06a83mg5m(-!n3xt^%5tgiz6-cx=$ho@)@ipzy^om'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ORIGINAL_ALLOW_ALL = True
 
+if DEBUG:
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:3000'
+    ]
+else:
+    CORS_ORIGIN_WHITELIST = [
+        # 프론트엔드 도메인이 들어갈 자리
+    ]
+
+AUTH_USER_MODEL = 'ssg.User'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +56,28 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'X-login-userid',
+    'X-login-userpw'
+    'X-id'
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,8 +86,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'inssgtagram.urls'
@@ -123,3 +159,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
